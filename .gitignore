@@ -1,8 +1,28 @@
 ### IntelliJ IDEA ###
+.idea/
+*.iml
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-.kotlin
+
+# IntelliJ workspace settings
+shelf/
+workspace.xml
+httpRequests/
+dataSources/
+dataSources.local.xml
+
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+
+### Build directories ###
+target/
+bin/
+build/
 
 ### Eclipse ###
 .apt_generated
@@ -12,19 +32,26 @@ out/
 .settings
 .springBeans
 .sts4-cache
-bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
+### OS ###
 .DS_Store
+Thumbs.db
+
+### Logs ###
+*.log
+
+### Custom — your project cleanup ###
+resources.zip
+*.iml
