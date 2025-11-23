@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.greencommute.controller.DashboardController"
+            styleClass="root">
+
+    <!-- Top Bar with User Avatar -->
+    <top>
+        <HBox styleClass="top-bar" spacing="20" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+
+            <!-- User Avatar and Welcome -->
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label text="👤" style="-fx-font-size: 28px;"/>
+                <Label fx:id="welcomeLabel" text="Welcome!" styleClass="welcome-text"/>
+            </HBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Points Badge with Emoji -->
+            <HBox spacing="8" alignment="CENTER" styleClass="points-label">
+                <Label text="⭐" style="-fx-font-size: 18px;"/>
+                <Label fx:id="pointsLabel" text="Points: 0"/>
+            </HBox>
+
+            <!-- Tier Badge with Emoji -->
+            <HBox spacing="8" alignment="CENTER" styleClass="tier-label">
+                <Label text="🏆" style="-fx-font-size: 18px;"/>
+                <Label fx:id="tierLabel" text="Tier: Bronze"/>
+            </HBox>
+
+            <Button text="🚪 Logout" onAction="#onLogout" styleClass="logout-btn"/>
+        </HBox>
+    </top>
+
+    <!-- Main Content with TabPane -->
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="main-tabs">
+
+            <!-- HOME TAB -->
+            <Tab text="🏠 Home">
+                <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                    <VBox spacing="20" styleClass="content-container">
+                        <padding>
+                            <Insets top="20" right="20" bottom="20" left="20"/>
+                        </padding>
+
+                        <!-- Stats Cards Row -->
+                        <HBox spacing="15" alignment="CENTER">
+                            <VBox styleClass="stat-card">
+                                <Label text="🔥" style="-fx-font-size: 32px;"/>
+                                <Label text="Current Streak" styleClass="stat-label"/>
+                                <Label fx:id="streakLabel" text="0 days" styleClass="stat-value"/>
+                            </VBox>
+                            <VBox styleClass="stat-card">
+                                <Label text="🎯" style="-fx-font-size: 32px;"/>
+                                <Label text="Weekly Goal" styleClass="stat-label"/>
+                                <ProgressBar fx:id="weeklyGoalProgress" prefWidth="200" styleClass="progress-bar"/>
+                                <Label fx:id="weeklyGoalLabel" text="0/5 trips" styleClass="stat-sublabel"/>
+                            </VBox>
+                            <VBox styleClass="stat-card">
+                                <Label text="🌍" style="-fx-font-size: 32px;"/>
+                                <Label text="CO₂ Saved" styleClass="stat-label"/>
+                                <Label text="0 kg" styleClass="stat-value"/>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Challenges Section -->
+                        <VBox spacing="10">
+                            <HBox spacing="8" alignment="CENTER_LEFT">
+                                <Label text="🎯" style="-fx-font-size: 24px;"/>
+                                <Label text="Active Challenges" styleClass="section-title"/>
+                            </HBox>
+                            <ScrollPane fitToWidth="true" prefHeight="250" styleClass="inner-scroll">
+                                <VBox fx:id="challengesBox" spacing="10"/>
+                            </ScrollPane>
+                        </VBox>
+
+                        <!-- Recent Trips -->
+                        <VBox spacing="10">
+                            <HBox spacing="8" alignment="CENTER_LEFT">
+                                <Label text="🚀" style="-fx-font-size: 24px;"/>
+                                <Label text="Recent Trips" styleClass="section-title"/>
+                            </HBox>
+                            <VBox fx:id="recentTripsBox" spacing="5" styleClass="recent-trips-box"/>
+                        </VBox>
+
+                        <!-- Quick Actions -->
+                        <HBox spacing="15" alignment="CENTER">
+                            <Button text="📍 Plan New Trip" styleClass="action-btn" prefWidth="200"/>
+                            <Button text="📝 Log Trip" styleClass="action-btn-alt" prefWidth="200"/>
+                        </HBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- TRIP PLANNER TAB -->
+            <Tab text="🗺️ Trip Planner">
+                <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                    <VBox spacing="20" styleClass="content-container">
+                        <padding>
+                            <Insets top="20" right="20" bottom="20" left="20"/>
+                        </padding>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="🗺️" style="-fx-font-size: 36px;"/>
+                            <Label text="Plan Your Green Commute" styleClass="page-title"/>
+                        </HBox>
+
+                        <!-- Input Section -->
+                        <VBox spacing="12" styleClass="input-section">
+                            <Label text="📍 Enter Trip Details" styleClass="section-title"/>
+                            <HBox spacing="15" alignment="CENTER_LEFT">
+                                <VBox spacing="5">
+                                    <Label text="From:" styleClass="input-label"/>
+                                    <TextField fx:id="tripFromField" promptText="🏠 Start location"
+                                               prefWidth="250" styleClass="input-field"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="To:" styleClass="input-label"/>
+                                    <TextField fx:id="tripToField" promptText="🎯 Destination"
+                                               prefWidth="250" styleClass="input-field"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="Distance (km):" styleClass="input-label"/>
+                                    <TextField fx:id="tripDistanceField" promptText="📏 e.g., 5.5"
+                                               prefWidth="120" styleClass="input-field"/>
+                                </VBox>
+                                <Button text="🔍 Find Routes" onAction="#onPlanTrip"
+                                        styleClass="action-btn" prefHeight="40"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Recommended Trips -->
+                        <VBox spacing="15">
+                            <Label text="🌟 Recommended Green Options" styleClass="section-title"/>
+                            <ScrollPane fitToWidth="true" prefHeight="500" styleClass="inner-scroll">
+                                <VBox fx:id="recommendedTripsBox" spacing="12"/>
+                            </ScrollPane>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- REWARDS TAB -->
+            <Tab text="🎁 Rewards">
+                <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                    <VBox spacing="20" styleClass="content-container">
+                        <padding>
+                            <Insets top="20" right="20" bottom="20" left="20"/>
+                        </padding>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="🎁" style="-fx-font-size: 36px;"/>
+                            <Label text="Rewards and Redemption" styleClass="page-title"/>
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label text="💰" style="-fx-font-size: 24px;"/>
+                            <Label fx:id="availablePointsLabel" text="Available Points: 0"
+                                   styleClass="points-display"/>
+                        </HBox>
+
+                        <!-- Rewards List -->
+                        <VBox spacing="15">
+                            <Label text="💎 Available Rewards" styleClass="section-title"/>
+                            <ScrollPane fitToWidth="true" prefHeight="400" styleClass="inner-scroll">
+                                <VBox fx:id="rewardsListBox" spacing="12"/>
+                            </ScrollPane>
+                        </VBox>
+
+                        <!-- Redemption History -->
+                        <VBox spacing="10">
+                            <Label text="📜 Redemption History" styleClass="section-title"/>
+                            <TextArea fx:id="rewardHistoryArea" prefHeight="150" editable="false"
+                                      styleClass="history-area"/>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- CO2 TRACKER TAB -->
+            <Tab text="🌍 CO₂ Tracker">
+                <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                    <VBox spacing="20" styleClass="content-container">
+                        <padding>
+                            <Insets top="20" right="20" bottom="20" left="20"/>
+                        </padding>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="🌍" style="-fx-font-size: 36px;"/>
+                            <Label text="Carbon Footprint Tracker" styleClass="page-title"/>
+                        </HBox>
+
+                        <!-- Total Stats -->
+                        <HBox spacing="30" alignment="CENTER">
+                            <VBox styleClass="co2-stat-card" alignment="CENTER">
+                                <Label text="🌱" style="-fx-font-size: 42px;"/>
+                                <Label fx:id="totalCO2Label" text="Total CO₂ Saved: 0 kg"
+                                       styleClass="co2-stat-value"/>
+                            </VBox>
+                            <VBox styleClass="co2-stat-card" alignment="CENTER">
+                                <Label text="🌳" style="-fx-font-size: 42px;"/>
+                                <Label fx:id="treesEquivLabel" text="Equivalent to 0 trees!"
+                                       styleClass="co2-stat-value"/>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Eco Calculator -->
+                        <VBox spacing="15" styleClass="calculator-section">
+                            <Label text="🧮 Eco Calculator" styleClass="section-title"/>
+                            <HBox spacing="15" alignment="CENTER_LEFT">
+                                <VBox spacing="5">
+                                    <Label text="Distance (km):" styleClass="input-label"/>
+                                    <TextField fx:id="ecoDistanceField" promptText="📏 Enter distance"
+                                               prefWidth="150" styleClass="input-field"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="Transport Mode:" styleClass="input-label"/>
+                                    <ComboBox fx:id="ecoModeCombo" prefWidth="150" styleClass="combo-box"/>
+                                </VBox>
+                                <Button text="🔬 Calculate" onAction="#onCalculateCO2"
+                                        styleClass="action-btn" prefHeight="40"/>
+                            </HBox>
+                            <Label fx:id="ecoResultLabel" text="" styleClass="eco-result"/>
+                        </VBox>
+
+                        <!-- Impact Visualization -->
+                        <VBox spacing="10" styleClass="impact-section">
+                            <Label text="📊 Your Environmental Impact" styleClass="section-title"/>
+                            <Label text="Every green commute makes a difference! 🌟"
+                                   styleClass="impact-text"/>
+                            <Label text="• 🌬️ Reduces air pollution" styleClass="impact-item"/>
+                            <Label text="• ☁️ Decreases carbon emissions" styleClass="impact-item"/>
+                            <Label text="• ♻️ Promotes sustainable living" styleClass="impact-item"/>
+                            <Label text="• 💚 Inspires others to go green" styleClass="impact-item"/>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- LOG TRIP TAB -->
+            <Tab text="📝 Log Trip">
+                <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                    <VBox spacing="20" styleClass="content-container">
+                        <padding>
+                            <Insets top="20" right="20" bottom="20" left="20"/>
+                        </padding>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="📝" style="-fx-font-size: 36px;"/>
+                            <Label text="Log Your Green Commute" styleClass="page-title"/>
+                        </HBox>
+
+                        <!-- Log Form -->
+                        <VBox spacing="15" styleClass="log-form">
+                            <HBox spacing="15">
+                                <VBox spacing="5">
+                                    <Label text="📅 Date:" styleClass="input-label"/>
+                                    <DatePicker fx:id="logDatePicker" prefWidth="200" styleClass="date-picker"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="🚗 Transport Mode:" styleClass="input-label"/>
+                                    <ComboBox fx:id="logModeCombo" prefWidth="200" styleClass="combo-box"/>
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="15">
+                                <VBox spacing="5">
+                                    <Label text="🏠 From:" styleClass="input-label"/>
+                                    <TextField fx:id="logFromField" promptText="Start location"
+                                               prefWidth="300" styleClass="input-field"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="🎯 To:" styleClass="input-label"/>
+                                    <TextField fx:id="logToField" promptText="Destination"
+                                               prefWidth="300" styleClass="input-field"/>
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="15">
+                                <VBox spacing="5">
+                                    <Label text="📏 Distance (km):" styleClass="input-label"/>
+                                    <TextField fx:id="logDistanceField" promptText="e.g., 5.5"
+                                               prefWidth="150" styleClass="input-field"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="⏱️ Duration (min):" styleClass="input-label"/>
+                                    <TextField fx:id="logDurationField" promptText="e.g., 30"
+                                               prefWidth="150" styleClass="input-field"/>
+                                </VBox>
+                            </HBox>
+
+                            <Button text="✅ Log This Trip" onAction="#onLogTrip"
+                                    styleClass="submit-btn" prefWidth="250" prefHeight="45"/>
+
+                            <Label fx:id="logStatusLabel" text="" styleClass="status-label"/>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- HISTORY TAB with Charts -->
+            <Tab text="📊 History">
+                <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                    <VBox spacing="20" styleClass="content-container">
+                        <padding>
+                            <Insets top="20" right="20" bottom="20" left="20"/>
+                        </padding>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="📊" style="-fx-font-size: 36px;"/>
+                            <Label text="Commute History" styleClass="page-title"/>
+                        </HBox>
+
+                        <!-- Charts Section -->
+                        <HBox spacing="20" alignment="CENTER">
+                            <!-- Bar Chart for Transport Modes -->
+                            <VBox spacing="10" styleClass="chart-container">
+                                <Label text="🚴 Transport Mode Distribution" styleClass="section-title"/>
+                                <BarChart fx:id="modeChart" prefHeight="300" prefWidth="600" styleClass="history-chart">
+                                    <xAxis>
+                                        <CategoryAxis label="Transport Mode" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Number of Trips" />
+                                    </yAxis>
+                                </BarChart>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Line Chart for CO2 Over Time -->
+                        <VBox spacing="10" styleClass="chart-container">
+                            <Label text="🌱 CO₂ Saved Over Time" styleClass="section-title"/>
+                            <LineChart fx:id="co2Chart" prefHeight="300" styleClass="history-chart">
+                                <xAxis>
+                                    <CategoryAxis label="Date" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis label="CO₂ Saved (kg)" />
+                                </yAxis>
+                            </LineChart>
+                        </VBox>
+
+                        <!-- Pie Chart for Distance Distribution -->
+                        <HBox spacing="20" alignment="CENTER">
+                            <VBox spacing="10" styleClass="chart-container">
+                                <Label text="📏 Distance Distribution" styleClass="section-title"/>
+                                <PieChart fx:id="distanceChart" prefHeight="300" prefWidth="400" styleClass="history-chart"/>
+                            </VBox>
+
+                            <!-- Stats Cards -->
+                            <VBox spacing="15" alignment="TOP_CENTER">
+                                <VBox styleClass="stat-card" alignment="CENTER" prefWidth="250">
+                                    <Label text="🚀" style="-fx-font-size: 32px;"/>
+                                    <Label text="Total Trips" styleClass="stat-label"/>
+                                    <Label fx:id="totalTripsLabel" text="0" styleClass="stat-value"/>
+                                </VBox>
+                                <VBox styleClass="stat-card" alignment="CENTER" prefWidth="250">
+                                    <Label text="📏" style="-fx-font-size: 32px;"/>
+                                    <Label text="Total Distance" styleClass="stat-label"/>
+                                    <Label fx:id="totalDistanceLabel" text="0 km" styleClass="stat-value"/>
+                                </VBox>
+                                <VBox styleClass="stat-card" alignment="CENTER" prefWidth="250">
+                                    <Label text="⭐" style="-fx-font-size: 32px;"/>
+                                    <Label text="Total Points" styleClass="stat-label"/>
+                                    <Label fx:id="totalPointsEarnedLabel" text="0" styleClass="stat-value"/>
+                                </VBox>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Detailed Table (Collapsible) -->
+                        <VBox spacing="10">
+                            <Label text="📋 Detailed Trip Log" styleClass="section-title"/>
+                            <TableView fx:id="commuteTable" styleClass="history-table" prefHeight="300">
+                                <columns>
+                                    <TableColumn fx:id="dateCol" text="📅 Date" prefWidth="100"/>
+                                    <TableColumn fx:id="fromCol" text="🏠 From" prefWidth="150"/>
+                                    <TableColumn fx:id="toCol" text="🎯 To" prefWidth="150"/>
+                                    <TableColumn fx:id="modeCol" text="🚗 Mode" prefWidth="100"/>
+                                    <TableColumn fx:id="distanceCol" text="📏 Distance (km)" prefWidth="120"/>
+                                    <TableColumn fx:id="durationCol" text="⏱️ Duration (min)" prefWidth="130"/>
+                                    <TableColumn fx:id="co2Col" text="🌱 CO₂ Saved (kg)" prefWidth="130"/>
+                                    <TableColumn fx:id="pointsCol" text="⭐ Points" prefWidth="80"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+</BorderPane>

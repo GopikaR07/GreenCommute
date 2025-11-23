@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.greencommute.controller.LoginController"
+            styleClass="root">
+
+    <center>
+        <VBox alignment="CENTER" spacing="16" maxWidth="520" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Green Commute Tracker" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+            <VBox spacing="10" alignment="CENTER" style="-fx-background-color: #f0f0f0; -fx-padding: 20; -fx-border-radius: 8; -fx-background-radius: 8;">
+                <TextField fx:id="emailField" promptText="Email" />
+                <PasswordField fx:id="passwordField" promptText="Password" />
+                <Button fx:id="loginBtn" text="Login" onAction="#onLogin" maxWidth="200"/>
+                <HBox spacing="8" alignment="CENTER">
+                    <Label text="Don't have an account?" />
+                    <Hyperlink fx:id="registerLink" text="Register" onAction="#onRegister"/>
+                </HBox>
+                <Label fx:id="statusLabel" style="-fx-text-fill: red;"/>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
